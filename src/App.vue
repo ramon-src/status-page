@@ -5,18 +5,18 @@
     </header>
     <main>
       <img src="./assets/logo.png" alt="Vue.js PWA">
-      <hello></hello>
+      <service-page></service-page>
     </main>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello';
+import ServicePage from '@/components/Service';
 
 export default {
   name: 'app',
   components: {
-    Hello,
+    ServicePage,
   },
 };
 </script>

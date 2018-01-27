@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Ramon Schmidt <ramonroc@gmail.com>",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "jest"
+    "test": "jest --watchAll --updateSnapshot --coverage"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "vue": "^2.5.2"
   },
   "devDependencies": {
