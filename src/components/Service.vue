@@ -1,11 +1,26 @@
 <template>
-  <ul class="service__list">
-    <li v-for="(service, index) in services" :key="index"
-      class="service__list-item">
-      <span class="service__list-item-status">{{ service.status }}</span>
-      <span class="service__list-item-name">{{ service.name }}</span>
-    </li>
-  </ul>
+<section class="service hero is-danger is-fullheight ">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Full Height title
+      </h1>
+      <h2 class="subtitle">
+        Full Height subtitle
+      </h2>
+      <div>
+        <ul class="service__list">
+          <li v-for="(service, index) in services" :key="index"
+            class="service__list-item">
+            <span class="service__list-item-status">{{ service.status }}</span>
+            <span class="service__list-item-name">{{ service.name }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 </template>
 
 <script>

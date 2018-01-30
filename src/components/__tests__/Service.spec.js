@@ -15,6 +15,20 @@ const axios = {
   },
 };
 
+const axiosWithStatusFalse = {
+  get: (url) => {
+    if (url === '/') {
+      return Promise.resolve({
+        data: [
+          { name: 'Ramon', status: 'false' },
+          { name: 'Rodrigo', status: 'true' },
+        ],
+      });
+    }
+    return Promise.reject();
+  },
+};
+
 describe('ServicePage', () => {
   let servicePage;
 
@@ -47,5 +61,15 @@ describe('ServicePage', () => {
       expect(items.at(0).text()).toBe('Ramon');
       expect(items.at(1).text()).toBe('Rodrigo');
     });
+  });
+
+  it('should show red background when any service status is false', () => {
+    const servicePageWithStatusFalse = shallow(ServicePage, {
+      mocks: {
+        axios: axiosWithStatusFalse,
+      },
+    });
+    const serviceStatusContainer = servicePageWithStatusFalse.find('.service');
+    expect(serviceStatusContainer.classes()).toContain('is-danger');
   });
 });
