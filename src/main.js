@@ -7,6 +7,8 @@ import App from './App';
 
 Vue.prototype.axios = axios;
 
+require('./assets/sass/main.scss');
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
