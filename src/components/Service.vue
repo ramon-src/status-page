@@ -2,12 +2,9 @@
 <section class="service hero is-danger is-fullheight ">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title">
-        Full Height title
+      <h1 class="title service__message">
+        Some service is not available :(
       </h1>
-      <h2 class="subtitle">
-        Full Height subtitle
-      </h2>
       <div>
         <ul class="service__list">
           <li v-for="(service, index) in services" :key="index"

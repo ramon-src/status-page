@@ -63,7 +63,7 @@ describe('ServicePage', () => {
     });
   });
 
-  it('should show red background when any service status is false', () => {
+  it('should show red background when some service status is false', () => {
     const servicePageWithStatusFalse = shallow(ServicePage, {
       mocks: {
         axios: axiosWithStatusFalse,
@@ -71,5 +71,15 @@ describe('ServicePage', () => {
     });
     const serviceStatusContainer = servicePageWithStatusFalse.find('.service');
     expect(serviceStatusContainer.classes()).toContain('is-danger');
+  });
+
+  it('should show Some service is not available :( when some service status is false', () => {
+    const servicePageWithStatusFalse = shallow(ServicePage, {
+      mocks: {
+        axios: axiosWithStatusFalse,
+      },
+    });
+    const serviceStatusContainer = servicePageWithStatusFalse.find('.service .service__message');
+    expect(serviceStatusContainer.text()).toBe('Some service is not available :(');
   });
 });
