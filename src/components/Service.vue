@@ -1,5 +1,7 @@
 <template>
-<section class="service hero is-danger is-fullheight ">
+<section 
+  class="service hero is-fullheight" 
+  :class="classes.pageBackground">
   <div class="hero-body">
     <div class="container">
       <h1 class="title service__message">
@@ -29,13 +31,21 @@ export default {
   data() {
     return {
       services: [],
+      classes: {
+        pageBackground: 'is-danger',
+      },
     };
   },
+  watch: {
+    services(updatedServices) {
+      const servicesUnavailables = updatedServices.map(service => !service.status);
+      this.classes.pageBackground = (servicesUnavailables.length > 0) ? 'is-danger' : 'is-success';
+    },
+  },
   methods: {
-    getServices() {
-      this.axios.get('/').then((response) => {
-        this.services = response.data;
-      });
+    async getServices() {
+      const response = await this.axios.get('/');
+      this.services = response.data;
     },
   },
 };

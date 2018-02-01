@@ -1,4 +1,5 @@
 import { shallow } from 'vue-test-utils';
+import Vue from 'vue';
 import ServicePage from '@/components/Service';
 
 const axios = {
@@ -6,8 +7,8 @@ const axios = {
     if (url === '/') {
       return Promise.resolve({
         data: [
-          { name: 'Ramon', status: 'true' },
-          { name: 'Rodrigo', status: 'true' },
+          { name: 'Ramon', status: true },
+          { name: 'Rodrigo', status: true },
         ],
       });
     }
@@ -20,8 +21,8 @@ const axiosWithStatusFalse = {
     if (url === '/') {
       return Promise.resolve({
         data: [
-          { name: 'Ramon', status: 'false' },
-          { name: 'Rodrigo', status: 'true' },
+          { name: 'Ramon', status: false },
+          { name: 'Rodrigo', status: true },
         ],
       });
     }
@@ -49,7 +50,7 @@ describe('ServicePage', () => {
   });
 
   it('should service list has two services after request services', () => {
-    const twoServices = [{ name: 'Ramon', status: 'true' }, { name: 'Rodrigo', status: 'true' }];
+    const twoServices = [{ name: 'Ramon', status: true }, { name: 'Rodrigo', status: true }];
     servicePage.vm.$nextTick(() => {
       expect(servicePage.vm.services).toEqual(twoServices);
     });
@@ -74,12 +75,23 @@ describe('ServicePage', () => {
   });
 
   it('should show Some service is not available :( when some service status is false', () => {
-    const servicePageWithStatusFalse = shallow(ServicePage, {
+    const servicePageWithStatusFalse2 = shallow(ServicePage, {
       mocks: {
         axios: axiosWithStatusFalse,
       },
     });
-    const serviceStatusContainer = servicePageWithStatusFalse.find('.service .service__message');
+    const serviceStatusContainer = servicePageWithStatusFalse2.find('.service .service__message');
     expect(serviceStatusContainer.text()).toBe('Some service is not available :(');
+  });
+
+  it('should show green background when all services status is true', () => {
+    const servicePageMounted = shallow(ServicePage, {
+      mocks: {
+        axios,
+      },
+    });
+    jest.runAllTicks();
+    servicePageMounted.update();
+    expect(servicePageMounted.vm.classes.pageBackground).toBe('is-success');
   });
 });

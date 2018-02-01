@@ -9,7 +9,8 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "jest --watchAll --updateSnapshot --coverage"
+    "test:watch": "jest --watchAll --updateSnapshot --coverage",
+    "test": "jest --updateSnapshot --coverage"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -89,6 +90,7 @@
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
+    "timers": "fake",
     "mapCoverage": true,
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
