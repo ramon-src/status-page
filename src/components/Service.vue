@@ -1,21 +1,31 @@
 <template>
 <section 
-  class="service hero is-fullheight" 
+  class="service section" 
   :class="classes.pageBackground">
-  <div class="hero-body">
     <div class="container">
-      <h1 class="title service__message">
-        Some service is not available <i class="far fa-frown"></i>
+      <h1 class="title is-1 has-text-center service__message">
+        <span :class="classes.pageBackground" v-if="hasOffline">Some service is not available <i class="far fa-frown"></i></span>
+        <span :class="classes.pageBackground" v-else>All services available! <i class="far fa-smile"></i></span>
       </h1>
-      <div>
-        <ul class="service__list">
+      <div class="service__status-container">
+        <a 
+          v-for="(service, index) in services"
+          :key="index"
+          :href="service.url"
+          target="_blank"
+          class="service__list-item tags has-addons">
+          <span class="tag">{{service.name}}</span>
+          <span class="tag service__list-item-version" :class="tagColor(service.online)">{{service.version}}</span>
+        </a>
+        <!-- <ul class="service__list">
           <li v-for="(service, index) in services" :key="index"
             class="service__list-item">
-            <span class="service__list-item-status">{{ service.status }}</span>
-            <span class="service__list-item-name">{{ service.name }}</span>
+            <span v-if="service.online" class="subtitle has-text-success service__list-item-status"><i class="fa fa-check"></i></span>
+            <span v-else class="subtitle has-text-danger service__list-item-status"><i class="fa fa-times"></i></span>
+            <span class="subtitle is-4 service__list-item-name">{{ service.name }}</span>
+            <span class="service__list-item-version">: {{ service.version }}</span>
           </li>
-        </ul>
-      </div>
+        </ul> -->
     </div>
   </div>
 </section>
@@ -31,33 +41,43 @@ export default {
   data() {
     return {
       services: [],
+      hasOffline: true,
       classes: {
-        pageBackground: 'is-danger',
+        pageBackground: 'has-text-danger',
       },
     };
   },
+  computed: {
+    unavailables() {
+      return this.services.filter(service => !service.online);
+    }
+  },
   watch: {
-    services(updatedServices) {
-      const servicesUnavailables = updatedServices.map(service => !service.status);
-      this.classes.pageBackground = (servicesUnavailables.length > 0) ? 'is-danger' : 'is-success';
-    },
+    unavailables(unavailables) {
+      if(unavailables.length > 0) {
+        this.classes.pageBackground = 'has-text-danger';
+        this.hasOffline = true;
+        return;
+      }
+      this.hasOffline = false;
+      this.classes.pageBackground = 'has-text-success';
+    }
   },
   methods: {
+    tagColor(isOnline) {
+      return (isOnline) ? 'is-success' : 'is-danger';
+    },
     getServices() {
-      const response = this.axios.get('/');
-      this.services = response.data;
+      this.axios.get('http://localhost:3000/approval').then(response => {
+        this.services = response.data.services;
+      });
     },
   },
 };
 </script>
 
 
-<style>
-h1,
-h2 {
-  font-weight: normal;
-}
-
+<style lang="scss">
 ul {
   list-style-type: none;
   padding: 0;
@@ -70,5 +90,41 @@ li {
 
 a {
   color: #35495e;
+}
+
+.service__message {
+  margin-top: 30px;
+}
+.service__status-container {
+  margin-top: 70px;
+}
+
+.service__list {
+  margin: 0px;
+}
+
+.service__list-item {
+  // display: block;
+  text-align: left;
+  padding: 5px 25px;
+  margin: 5px;
+  font-weight: 400;
+  // border: 1px solid #444;
+  // border-radius: 50px;
+}
+.service__list-item {
+    display: inline-flex;
+  .tag {
+    font-size: 1.2rem;
+    // display: inline-block;
+  }
+}
+
+.service__list-item-status {
+  margin-right: 5px;
+}
+
+.service__list-item-version {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 </style>

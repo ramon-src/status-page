@@ -1,34 +1,17 @@
 import { shallow } from 'vue-test-utils';
 import Vue from 'vue';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import ServicePage from '@/components/Service';
 
-const axios = {
-  get: (url) => {
-    if (url === '/') {
-      return Promise.resolve({
-        data: [
-          { name: 'Ramon', status: true },
-          { name: 'Rodrigo', status: true },
-        ],
-      });
-    }
-    return Promise.reject();
-  },
-};
+const mock = new MockAdapter(axios);
 
-const axiosWithStatusFalse = {
-  get: (url) => {
-    if (url === '/') {
-      return Promise.resolve({
-        data: [
-          { name: 'Ramon', status: false },
-          { name: 'Rodrigo', status: true },
-        ],
-      });
-    }
-    return Promise.reject();
-  },
-};
+mock.onGet('/').reply(200, {
+  data: [
+    { name: 'Ramon', status: true },
+    { name: 'Rodrigo', status: true },
+  ]
+});
 
 describe('ServicePage', () => {
   let servicePage;
