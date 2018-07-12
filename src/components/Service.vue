@@ -1,35 +1,22 @@
 <template>
-<section 
-  class="service section" 
-  :class="classes.pageBackground">
-    <div class="container">
-      <h1 class="title is-1 has-text-center service__message">
-        <span :class="classes.pageBackground" v-if="hasOffline">Some service is not available <i class="far fa-frown"></i></span>
-        <span :class="classes.pageBackground" v-else>All services available! <i class="far fa-smile"></i></span>
-      </h1>
-      <div class="service__status-container">
-        <a 
-          v-for="(service, index) in services"
-          :key="index"
-          :href="service.url"
-          target="_blank"
-          class="service__list-item tags has-addons">
-          <span class="tag">{{service.name}}</span>
-          <span class="tag service__list-item-version" :class="tagColor(service.online)">{{service.version}}</span>
-        </a>
-        <!-- <ul class="service__list">
-          <li v-for="(service, index) in services" :key="index"
-            class="service__list-item">
-            <span v-if="service.online" class="subtitle has-text-success service__list-item-status"><i class="fa fa-check"></i></span>
-            <span v-else class="subtitle has-text-danger service__list-item-status"><i class="fa fa-times"></i></span>
-            <span class="subtitle is-4 service__list-item-name">{{ service.name }}</span>
-            <span class="service__list-item-version">: {{ service.version }}</span>
-          </li>
-        </ul> -->
+  <section class="service section" :class="classes.textColor">
+      <div class="container">
+        <h1 class="title is-1 has-text-center service__message">
+          <span :class="classes.textColor" v-if="hasAnyServiceOffline">Some service is not available <i class="far fa-frown"></i></span>
+          <span :class="classes.textColor" v-else>All services available! <i class="far fa-smile"></i></span>
+        </h1>
+        <div class="service__status-container">
+          <a v-for="(service, index) in services"
+            :key="index"
+            :href="service.url"
+            target="_blank"
+            class="service__list-item tags has-addons">
+            <span class="tag">{{service.name}}</span>
+            <span class="tag service__list-item-version" :class="tagColor(service.online)">{{service.version}}</span>
+          </a>
+      </div>
     </div>
-  </div>
-</section>
-
+  </section>
 </template>
 
 <script>
@@ -41,9 +28,10 @@ export default {
   data() {
     return {
       services: [],
-      hasOffline: true,
+      hasAnyServiceOffline: true,
       classes: {
-        pageBackground: 'has-text-danger',
+        pageBackground: 'is-danger',
+        textColor: 'has-text-danger',
       },
     };
   },
@@ -55,12 +43,12 @@ export default {
   watch: {
     unavailables(unavailables) {
       if(unavailables.length > 0) {
-        this.classes.pageBackground = 'has-text-danger';
-        this.hasOffline = true;
+        this.classes.textColor = 'has-text-danger';
+        this.hasAnyServiceOffline = true;
         return;
       }
-      this.hasOffline = false;
-      this.classes.pageBackground = 'has-text-success';
+      this.hasAnyServiceOffline = false;
+      this.classes.textColor = 'has-text-success';
     }
   },
   methods: {
@@ -113,10 +101,9 @@ a {
   // border-radius: 50px;
 }
 .service__list-item {
-    display: inline-flex;
+  display: inline-flex;
   .tag {
     font-size: 1.2rem;
-    // display: inline-block;
   }
 }
 
