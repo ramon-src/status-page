@@ -5,7 +5,7 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title service__message">
-        Some service is not available :(
+        Some service is not available <i class="far fa-frown"></i>
       </h1>
       <div>
         <ul class="service__list">
@@ -43,8 +43,8 @@ export default {
     },
   },
   methods: {
-    async getServices() {
-      const response = await this.axios.get('/');
+    getServices() {
+      const response = this.axios.get('/');
       this.services = response.data;
     },
   },
@@ -52,9 +52,7 @@ export default {
 </script>
 
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-/*       */
 h1,
 h2 {
   font-weight: normal;
